@@ -45,7 +45,7 @@ def main():
     parser.add_argument(
         "--verbose",
         action="store_true",
-        help="Force verbose output"
+        help="Set logging level to INFO"
     )
 
     args = parser.parse_args()
