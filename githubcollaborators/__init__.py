@@ -4,9 +4,9 @@
 import requests
 
 
-def fetch_repos(creds: (str, str), page: int = 1):
+def fetch_repos(creds: (str, str), repos_type: str, page: int = 1):
     r = requests.get(
-        f"https://api.github.com/user/repos?per_page=100&page={page}&visibility=all", auth=creds)
+        f"https://api.github.com/user/repos?per_page=100&page={page}&visibility={repos_type}", auth=creds)
     if r.status_code != 200:
         print(f"Wrong status code on {r.url}: {r.status_code}")
     if len(r.json()) == 0:
@@ -52,12 +52,11 @@ def filter_repos_by_collaborators(repos):
     return [repo for repo in repos if len(repo["collaborators"]) > 1]
 
 
-def githubcollaborators(username: str, token: str):
+def githubcollaborators(username: str, token: str, repos_type: str = 'all'):
     creds = (username, token)
 
-    repos = fetch_repos(creds)
+    repos = fetch_repos(creds, repos_type=repos_type)
     processed_repos = [process_repo(creds, repo) for repo in repos]
-    repos_with_collaborators = filter_repos_by_collaborators(
-        creds, processed_repos)
+    repos_with_collaborators = filter_repos_by_collaborators(processed_repos)
 
     return repos_with_collaborators
