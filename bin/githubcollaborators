@@ -3,6 +3,8 @@
 import argparse
 import getpass
 import json
+import logging
+import sys
 
 from githubcollaborators import githubcollaborators
 
@@ -48,12 +50,21 @@ def main():
 
     args = parser.parse_args()
 
+    # Logging config
+    logger = logging.getLogger("githubcollaborators")
+    if args.verbose:
+        logger.setLevel(logging.INFO)
+    else:
+        logger.setLevel(logging.ERROR)
+    handler = logging.StreamHandler(sys.stderr)
+    handler.setFormatter(logging.Formatter("[%(levelname)s]: %(message)s"))
+    logger.addHandler(handler)
+
     token = getpass.getpass(
         "GitHub Personal Access Token:") if args.token is None else args.token
-    verbose = False if args.verbose is None else args.verbose
 
     repos_with_collaborators = githubcollaborators(
-        args.username, token, verbose=True)
+        args.username, token, logger_obj=logger)
 
     if args.output is not None:
         with open(args.output, "w") as f:
