@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="githubcollaborators",
-    version="0.0.2",
+    version="0.0.3",
     author="Marco Lussetti",
     author_email="packages@marcolussetti.com",
     description="List collaborators for all of a user's repositories.",

@@ -37,10 +37,10 @@ def fetch_collaborators(creds: (str, str), collaborators_url: str, page: int = 1
         return curr_results
 
 
-def process_repo(repo):
+def process_repo(creds, repo):
     return {
         "url": repo["html_url"],
-        "collaborators": [c["login"] for c in fetch_collaborators(repo["collaborators_url"])],
+        "collaborators": [c["login"] for c in fetch_collaborators(creds, repo["collaborators_url"])],
         "owner": repo["owner"]["login"],
         "owner_type": repo["owner"]["type"],
         "private": repo["private"],
@@ -56,7 +56,7 @@ def githubcollaborators(username: str, token: str):
     creds = (username, token)
 
     repos = fetch_repos(creds)
-    processed_repos = [process_repo(repo) for repo in repos]
+    processed_repos = [process_repo(creds, repo) for repo in repos]
     repos_with_collaborators = filter_repos_by_collaborators(
         creds, processed_repos)
 
