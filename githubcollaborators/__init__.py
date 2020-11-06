@@ -4,11 +4,15 @@
 import requests
 
 
-def fetch_repos(creds: (str, str), repos_type: str, page: int = 1):
+def fetch_repos(creds: (str, str), repos_type: str, page: int = 1, verbose: bool = False):
     r = requests.get(
-        f"https://api.github.com/user/repos?per_page=100&page={page}&visibility={repos_type}", auth=creds)
+        f"https://api.github.com/user/repos?per_page=100&page={page}&visibility={repos_type}",
+        auth=creds, timeout=5, headers={
+            "User-Agent": "githubcollaborators"
+        })
     if r.status_code != 200:
-        print(f"Wrong status code on {r.url}: {r.status_code}")
+        if verbose:
+            print(f"Wrong status code on {r.url}: {r.status_code}")
     if len(r.json()) == 0:
         return []
     curr_results = r.json()
@@ -18,16 +22,16 @@ def fetch_repos(creds: (str, str), repos_type: str, page: int = 1):
         return curr_results
 
 
-def fetch_collaborators(creds: (str, str), collaborators_url: str, page: int = 1):
+def fetch_collaborators(creds: (str, str), collaborators_url: str, page: int = 1, verbose: bool = False):
     collaborators_url = collaborators_url.replace("{/collaborator}", "")
     r = requests.get(
-        f"{collaborators_url}?per_page=100&page={page}", auth=creds)
+        f"{collaborators_url}?per_page=100&page={page}", auth=creds, timeout=5, headers={
+            "User-Agent": "githubcollaborators"
+        })
     if r.status_code != 200:
-        # print(f"Wrong status code on {r.url}: {r.status_code}")
-        if r.status_code == 403:
-            return []
+        if verbose:
+            print(f"Wrong status code on {r.url}: {r.status_code}")
         return []
-    # print(f"{user}: {len(r.json())} {list_type}. page {page}")
     if len(r.json()) == 0:
         return []
     curr_results = r.json()
@@ -52,11 +56,19 @@ def filter_repos_by_collaborators(repos):
     return [repo for repo in repos if len(repo["collaborators"]) > 1]
 
 
-def githubcollaborators(username: str, token: str, repos_type: str = 'all'):
+def githubcollaborators(username: str, token: str, repos_type: str = 'all', verbose: bool = False):
     creds = (username, token)
 
-    repos = fetch_repos(creds, repos_type=repos_type)
+    repos = fetch_repos(creds, repos_type=repos_type, verbose=verbose)
+    if verbose:
+        print(f"Fetched {len(repos)} repositories.")
     processed_repos = [process_repo(creds, repo) for repo in repos]
-    repos_with_collaborators = filter_repos_by_collaborators(processed_repos)
+    if verbose:
+        print("Fetched collaborators.")
+    repos_with_collaborators = filter_repos_by_collaborators(
+        processed_repos, verbose=verbose)
+    if verbose:
+        print(
+            f"Found {len(repos_with_collaborators)} repositories with collaborators.")
 
     return repos_with_collaborators

@@ -40,17 +40,22 @@ def main():
         required=False,
         help="Save to specified output file"
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Force verbose output"
+    )
 
     args = parser.parse_args()
 
-    if "token" not in args:
-        token = getpass.getpass("GitHub Personal Access Token:")
-    else:
-        token = args.token
+    token = getpass.getpass(
+        "GitHub Personal Access Token:") if args.token is None else args.token
+    verbose = False if args.verbose is None else args.verbose
 
-    repos_with_collaborators = githubcollaborators(args.username, token)
+    repos_with_collaborators = githubcollaborators(
+        args.username, token, verbose=True)
 
-    if "output" in args and args.output:
+    if args.output is not None:
         with open(args.output, "w") as f:
             json.dump(repos_with_collaborators, f, indent=2, sort_keys=True)
     else:

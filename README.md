@@ -19,7 +19,7 @@ Requires the following permissions:
 
 ```bash
 pip install githubcollaborators
-githubcollaborators -u <your-github-username> -t <github-personal-access-token>
+githubcollaborators -u <your-github-username> -t <github-personal-access-token> -o output.json
 ```
 
 ## As a library
