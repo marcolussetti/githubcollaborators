@@ -52,7 +52,7 @@ def filter_repos_by_collaborators(repos):
     return [repo for repo in repos if len(repo["collaborators"]) > 1]
 
 
-def github_collaborators(username: str, token: str):
+def githubcollaborators(username: str, token: str):
     creds = (username, token)
 
     repos = fetch_repos(creds)

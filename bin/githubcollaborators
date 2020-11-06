@@ -3,7 +3,7 @@
 import argparse
 import json
 
-from github_collaborators import github_collaborators
+from githubcollaborators import githubcollaborators
 
 
 def main():
@@ -28,7 +28,7 @@ def main():
 
     args = parser.parse_args()
 
-    repos_with_collaborators = github_collaborators(
+    repos_with_collaborators = githubcollaborators(
         args.username, args.token)
 
     print(json.dumps(repos_with_collaborators, 2))

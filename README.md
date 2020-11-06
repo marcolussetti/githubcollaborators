@@ -1,6 +1,8 @@
-# github-collaborators
+# githubcollaborators
 
-This is a very simple tool. It takes a GitHub username & Personal Access Token, and returns a JSON with the collaborators on the user's GitHub repos, where there are collaborators.
+This is a very simple tool. It takes a GitHub username & Personal Access Token,
+and returns a JSON with the collaborators on the user's GitHub repos, where
+there are collaborators.
 
 
 ## Personal Access Token
@@ -16,14 +18,14 @@ Requires the following permissions:
 ## Standalone
 
 ```bash
-pip install github-collaborators
-github-collaborators --username <your-github-username> --token <your-github-personal-access-token>
+pip install githubcollaborators
+githubcollaborators -u <your-github-username> -t <github-personal-access-token>
 ```
 
 ## As a library
 
 ```python
-from github-collaborators import github-collaborators
+from githubcollaborators import githubcollaborators
 
-print(github-collaborators(<your_username>, <your_personal_access_token>))
+print(githubcollaborators(<your_username>, <your_personal_access_token>))
 ```

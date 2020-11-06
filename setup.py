@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="github-collaborators",  # Replace with your own username
-    version="0.0.1",
+    name="githubcollaborators",
+    version="0.0.2",
     author="Marco Lussetti",
     author_email="packages@marcolussetti.com",
     description="List collaborators for all of a user's repositories.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/marcolussetti/github-collaborators",
+    url="https://github.com/marcolussetti/githubcollaborators",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -20,7 +20,7 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     scripts=[
-        'bin/github-collaborators'
+        'bin/githubcollaborators'
     ],
     install_requires=[
         'requests'
